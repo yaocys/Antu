@@ -1,0 +1,62 @@
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userinfo-avatar {
+  width: 128px;
+  height: 128px;
+  margin: 20px;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #aaa;
+}
+
+.usermotto {
+  margin-top: 200px;
+}
+
+/* 评论列表 start */
+.evaluation-wrap {
+  padding: 20px;
+}
+
+.evaluation__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #dfe6e9;
+  padding: 20px 0;
+}
+
+.evaluation__time {
+  color: #ccc;
+  font-size: 24px
+}
+
+/* 评论列表 end */
+
+.bottom_bar{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #b2bec3;
+  backdrop-filter: blur(5px);
+  opacity: 0.98;
+}
+
+/* 评论框 adu 20200408 start */
+.commentContent {
+  font-size: 24px;
+  border: 2px solid #f0f0f0;
+  border-radius: 34px;
+  padding: 20px;
+  color: #999;
+  line-height: 24px;
+  background-color: #dfe6e9;
+}
+
+/* 评论框 adu 20200408 end */

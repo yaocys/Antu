@@ -2,14 +2,28 @@
   "miniprogramRoot": "./dist",
   "projectname": "Antu",
   "description": "岸途研考社区-小程序端",
-  "appid": "touristappid",
   "setting": {
     "urlCheck": true,
-    "es6": false,
+    "es6": true,
     "enhance": false,
     "compileHotReLoad": false,
     "postcss": false,
-    "minified": false
+    "minified": false,
+    "wxssCompiler": "sass",
+    "miniprogram": {
+      "devtool": "source-map",
+      "es6Compile": {
+        "include": [
+          "wxParse"
+        ],
+        "exclude": []
+      },
+      "setEnableDebug": {
+        "enableDebug": true
+      },
+      "appid": "wx0523e122aa5962bc",
+      "libVersion": "2.31.0"
+    }
   },
   "compileType": "miniprogram"
 }
