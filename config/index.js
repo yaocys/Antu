@@ -9,7 +9,8 @@ const config = {
   },
   sourceRoot: 'src',
   outputRoot: 'dist',
-  plugins: [],
+  plugins: ['@tarojs/plugin-http'
+  ],
   defineConstants: {
   },
   copy: {

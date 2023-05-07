@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import { View, Text } from '@tarojs/components'
 import {AtAvatar, AtButton, AtGrid, AtList, AtListItem} from "taro-ui";
 import Taro from "@tarojs/taro";
@@ -7,7 +7,11 @@ import './index.scss'
 
 const User = ()=>{
 
-  const [login,setLogin] = useState(false);
+  const [login,setLogin] = useState(!!Taro.getStorageSync('ticket'));
+
+  useEffect(()=>{
+    setLogin(!!Taro.getStorageSync('ticket'))
+  },[])
 
   const handleClick = ()=>{
 
@@ -28,20 +32,20 @@ const User = ()=>{
       return (
         <>
           <View className='at-row at-row__justify--center'
-                style={{backgroundColor:'white',paddingBottom:'20px'}}
+                style={{backgroundColor:'white',paddingBottom:'30px'}}
           >
             <View className='at-col-3'>
-              <AtAvatar circle image='https://jdc.jd.com/img/200' size='large' />
+              <AtAvatar circle image={Taro.getStorageSync('headerUrl')} size='large' />
             </View>
             <View className='at-col-5' style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-              <View style={{fontWeight: 'bolder', fontSize: '13px', marginBottom: '3px'}}>岸途21421435324号</View>
+              <View style={{fontWeight: 'bolder', fontSize: 'medium', marginBottom: '10px'}}>{Taro.getStorageSync('username')}</View>
               <View style={{fontSize: '10px', color: '#b2bec3'}}>上海财经大学 计算机类</View>
             </View>
             <View className='at-col-3 at-col__align--center'>
               <AtButton type='primary' size='small' circle style={{fontSize: 'x-small'}}>个人中心</AtButton>
             </View>
           </View>
-          <View className='at-row at-row__justify--center' style={{paddingBottom:'20px',backgroundColor:'white',marginBottom:'5px'}}>
+          <View className='at-row at-row__justify--center' style={{paddingBottom:'25px',backgroundColor:'white',marginBottom:'5px'}}>
             <View className='at-col-3' style={{textAlign:'center'}}>
               <View className='at-icon at-icon-message' style={{fontSize:'x-large',marginBottom:'5px'}} />
               <View style={{fontSize:'small'}}>评论</View>
@@ -76,29 +80,31 @@ const User = ()=>{
         loginOrNot()
       }
 
-
-
       <AtList>
-        <AtListItem title='&nbsp;金币商城' onClick={handleClick}
-                    iconInfo={{ size: 20, color: '#78A4FA', value: 'shopping-bag', }}
+        <AtListItem title='&nbsp;兑换商城' onClick={handleClick}
+          iconInfo={{ size: 20, color: '#e17055', value: 'shopping-bag', }}
+          extraText='纪念币上新'
         />
         <AtListItem title='&nbsp;金币任务' arrow='right'
-                    iconInfo={{ size: 20, color: '#78A4FA', value: 'list', }}
+          iconInfo={{ size: 20, color: '#fdcb6e', value: 'list', }}
         />
-        <AtListItem title='&nbsp;我的资产' arrow='right'
-                    iconInfo={{ size: 20, color: '#78A4FA', value: 'money', }}
+        <AtListItem title='&nbsp;我的关注' arrow='right'
+          iconInfo={{ size: 20, color: '#00cec9', value: 'tags', }}
         />
-        <AtListItem title='&nbsp;设置' extraText='详细信息'
-                    iconInfo={{ size: 20, color: '#78A4FA', value: 'settings', }}
-        />
-        <AtListItem title='&nbsp;帮助与反馈' disabled extraText='详细信息'
-                    iconInfo={{ size: 20, color: '#78A4FA', value: 'help', }}
-        />
-        <AtListItem
-          title='&nbsp;关于'
+        <AtListItem title='&nbsp;深色模式'
+          iconInfo={{ size: 20, color: '#2d3436', value: 'loading', }}
           isSwitch
           onSwitchChange={handleChange}
-          iconInfo={{ size: 20, color: '#78A4FA', value: 'alert-circle', }}
+        />
+        <AtListItem title='&nbsp;设置' arrow='right'
+          iconInfo={{ size: 20, color: '#0984e3', value: 'settings', }}
+        />
+        <AtListItem title='&nbsp;帮助与反馈' extraText='详细信息'
+          iconInfo={{ size: 20, color: '#636e72', value: 'help', }}
+        />
+        <AtListItem arrow='right'
+          title='&nbsp;关于' extraText='v1.0.3&nbsp;'
+          iconInfo={{ size: 20, color: '#b2bec3', value: 'alert-circle', }}
         />
       </AtList>
     </View>
