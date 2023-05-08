@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Image, Swiper, SwiperItem, View} from '@tarojs/components';
-import Taro, { useReachBottom,usePullDownRefresh } from "@tarojs/taro";
+import Taro, {useReachBottom, usePullDownRefresh} from "@tarojs/taro";
 import {AtDivider, AtTabsPane, AtTabs, AtNoticebar, AtSearchBar, AtActivityIndicator} from "taro-ui";
 
 import PostItem from "../../components/PostItem/PostItem";
@@ -9,11 +9,11 @@ import './index.scss'
 
 const PAGE_SIZE = 5
 
-interface Props{
+interface Props {
 
 }
 
-interface PostListItem{
+interface PostListItem {
   id: string,
   userId: string,
   title: string,
@@ -44,8 +44,8 @@ const Index: React.FC<Props> = () => {
 
   const [postList, setPostList] = useState<PostListItem[]>([]);// 帖子列表
   const [loading, setLoading] = useState(false);// 加载状态
-  const [pageNum,setPageNum] = useState(0);
-  const [hasNextPage,setHasNextPage] = useState(true);
+  const [pageNum, setPageNum] = useState(0);
+  const [hasNextPage, setHasNextPage] = useState(true);
   const [current, setCurrent] = useState(1);
   const [keyword, setKeyword] = useState('');
 
@@ -60,26 +60,26 @@ const Index: React.FC<Props> = () => {
     setKeyword(value);
   }
 
-  usePullDownRefresh(()=>{
+  usePullDownRefresh(() => {
     console.log('正在下拉刷新')
   })
 
-  useReachBottom(()=>{
+  useReachBottom(() => {
     console.log('已经到最底下了')
     getPostList();
   })
 
   const getPostList = async () => {
-    if(!hasNextPage||loading) return;
+    if (!hasNextPage || loading) return;
     setLoading(true);
     try {
       const response = await Taro.request({
         url: "https://yaos.cc/community/index",
         data: {
-          offset: pageNum+1,
+          offset: pageNum + 1,
           limit: PAGE_SIZE
         },
-        complete:()=>{
+        complete: () => {
           setLoading(false);
         }
       });
@@ -102,6 +102,12 @@ const Index: React.FC<Props> = () => {
 
   return (
     <View className='index'>
+      {/*搜索*/}
+      <AtSearchBar
+        value={keyword}
+        onChange={handleSearch}
+      />
+
       <AtTabs
         current={current}
         tabList={tab_list}
@@ -116,16 +122,6 @@ const Index: React.FC<Props> = () => {
         <AtTabsPane current={current} index={1}>
           <View style={{fontSize: '18px'}}>
 
-            {/*通告栏*/}
-            <AtNoticebar icon='volume-plus' single={false} close showMore moreText='查看公约'>
-              欢迎加入岸途，点击 这里 查看我们的社区公约
-            </AtNoticebar>
-
-            <AtSearchBar
-              value={keyword}
-              onChange={handleSearch}
-            />
-
             {/*轮播图*/}
             <Swiper
               className='test-h'
@@ -135,29 +131,35 @@ const Index: React.FC<Props> = () => {
               circular
               indicatorDots
               autoplay
+              style={{margin: '5px 10px'}}
             >
               <SwiperItem>
                 <View className='demo-text-1'>
                   <Image src={require('../../pic/Surface Duo - Blue Sky.jpg')}
-                    style={{objectFit: 'cover', width: '100%'}}
+                         style={{objectFit: 'cover', width: '100%'}}
                   />
                 </View>
               </SwiperItem>
               <SwiperItem>
                 <View className='demo-text-2'>
                   <Image src={require('../../pic/Surface Family.jpg')}
-                    style={{objectFit: 'cover', width: '100%'}}
+                         style={{objectFit: 'cover', width: '100%'}}
                   />
                 </View>
               </SwiperItem>
               <SwiperItem>
                 <View className='demo-text-3'>
                   <Image src={require('../../pic/Surface Laptop 2 - Default.jpg')}
-                    style={{objectFit: 'cover', width: '100%'}}
+                         style={{objectFit: 'cover', width: '100%'}}
                   />
                 </View>
               </SwiperItem>
             </Swiper>
+
+            {/*通告栏*/}
+            <AtNoticebar icon='volume-plus' single={false} close showMore moreText='查看公约'>
+              欢迎加入岸途，点击 这里 查看我们的社区公约
+            </AtNoticebar>
 
             <View style={{padding: '0 20px 0 20px'}}>
               {
@@ -182,12 +184,12 @@ const Index: React.FC<Props> = () => {
               }
             </View>
             {
-              loading && <View style={{position:'relative',height:'30px'}}>
+              loading && <View style={{position: 'relative', height: '30px'}}>
                 <AtActivityIndicator mode='center' isOpened content='加载中…'></AtActivityIndicator>
               </View>
             }
             {
-              !hasNextPage && <AtDivider content='没有更多的数据了' fontSize={24} height={45} fontColor='#CCC' />
+              !hasNextPage && <AtDivider content='没有更多的数据了' fontSize={24} height={45} fontColor='#CCC'/>
             }
           </View>
         </AtTabsPane>

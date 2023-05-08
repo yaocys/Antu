@@ -1,7 +1,9 @@
 import {useEffect, useState} from 'react'
 import { View, Text } from '@tarojs/components'
+import Taro, { useDidShow } from '@tarojs/taro'
+
 import {AtAvatar, AtButton, AtGrid, AtList, AtListItem} from "taro-ui";
-import Taro from "@tarojs/taro";
+
 
 import './index.scss'
 
@@ -9,9 +11,9 @@ const User = ()=>{
 
   const [login,setLogin] = useState(!!Taro.getStorageSync('ticket'));
 
-  useEffect(()=>{
+  useDidShow(()=>{
     setLogin(!!Taro.getStorageSync('ticket'))
-  },[])
+  })
 
   const handleClick = ()=>{
 
@@ -81,7 +83,7 @@ const User = ()=>{
       }
 
       <AtList>
-        <AtListItem title='&nbsp;兑换商城' onClick={handleClick}
+        <AtListItem title='&nbsp;兑换商城' onClick={handleClick} arrow='right'
           iconInfo={{ size: 20, color: '#e17055', value: 'shopping-bag', }}
           extraText='纪念币上新'
         />
@@ -98,8 +100,9 @@ const User = ()=>{
         />
         <AtListItem title='&nbsp;设置' arrow='right'
           iconInfo={{ size: 20, color: '#0984e3', value: 'settings', }}
+          onClick={()=>Taro.navigateTo({url:'/pages/setting/setting'})}
         />
-        <AtListItem title='&nbsp;帮助与反馈' extraText='详细信息'
+        <AtListItem title='&nbsp;帮助与反馈' extraText='详细信息' arrow='right'
           iconInfo={{ size: 20, color: '#636e72', value: 'help', }}
         />
         <AtListItem arrow='right'

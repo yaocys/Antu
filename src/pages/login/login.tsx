@@ -2,7 +2,6 @@ import {Image, Navigator, View} from "@tarojs/components";
 import React, {useEffect, useState} from "react";
 import {AtButton, AtDivider, AtForm, AtInput} from "taro-ui";
 import Taro from "@tarojs/taro";
-import {get} from "axios";
 
 interface Props{
 
@@ -33,15 +32,20 @@ const Login: React.FC<Props>=()=>{
       credentials: 'include'
     }).then(
       (response)=>{
-        // 后端的set-cookie字段携带的ticket、
-        Taro.setStorageSync('ticket',response.data.data.ticket.ticket)
-        Taro.setStorageSync('username',response.data.data.username)
-        Taro.setStorageSync('userId',response.data.data.userId)
-        Taro.setStorageSync('headerUrl',response.data.data.headerUrl)
-        // 跳转至tab页
-        Taro.switchTab({
-          url:'/pages/user/user'
-        })
+        if(response.data.code===400){
+          Taro.showToast({
+            title: response.data.msg
+          })
+        }else if(response.data.code===200){
+          Taro.setStorageSync('ticket',response.data.data.ticket)
+          Taro.setStorageSync('username',response.data.data.username)
+          Taro.setStorageSync('userId',response.data.data.userId)
+          Taro.setStorageSync('headerUrl',response.data.data.headerUrl)
+
+          Taro.switchTab({
+            url:'/pages/user/user'
+          })
+        }
       }
     )
   }
@@ -94,6 +98,59 @@ const Login: React.FC<Props>=()=>{
     }
   }
 
+  const handleWxLogin =  ()=>{
+    Taro.getUserProfile({
+      desc:'完善用户信息',
+      success:async(result)=>{
+        const nickName = result.userInfo.nickName;
+        const avatarUrl = result.userInfo.avatarUrl;
+        await Taro.login({
+          success: (res)=>{
+            if(res.code){
+              Taro.request({
+                url: 'https://yaos.cc/community/wechatLogin',
+                method: 'POST',
+                data: {
+                  code: res.code,
+                  nickname: nickName,
+                  headerUrl: avatarUrl
+                },
+                success:(response)=>{
+                  if(response.data.code===400){
+                    Taro.showToast({
+                      title: response.data.msg
+                    })
+                  }else if(response.data.code===200){
+                    Taro.setStorageSync('ticket',response.data.data.ticket)
+                    Taro.setStorageSync('username',nickName)
+                    Taro.setStorageSync('headerUrl',avatarUrl)
+
+                    Taro.switchTab({
+                      url:'/pages/user/user'
+                    })
+                  }
+                },fail:()=>{
+                  Taro.showToast({
+                    title: '请求登录失败'
+                  })
+                }
+              })
+            }
+          },fail:()=>{
+            Taro.showToast({
+              title: '获取code失败'
+            })
+          }
+        })
+      },
+      fail:()=>{
+        Taro.showToast({
+          title:'获取用户信息失败'
+        })
+      }
+    })
+  }
+
   return (
     <View>
       <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' ,height:'20vh'}}>
@@ -127,6 +184,9 @@ const Login: React.FC<Props>=()=>{
             onChange={saveFormData('code')}
           >
             <Image src={captcha} onClick={getCaptcha} />
+            {
+              // TODO 设置一个60s定时器以及对应的UI效果，提示用户刷新验证码
+            }
           </AtInput>
           <View  style={{margin:'30px 15px 8px 15px'}}>
             <AtButton type='primary' circle formType='submit'>登录</AtButton>
@@ -136,10 +196,7 @@ const Login: React.FC<Props>=()=>{
           </View>
           <AtDivider content='一键登录' height='30px' fontSize='26' />
           <View  style={{margin:'8px 15px'}}>
-            <AtButton type='primary' circle>微信登录</AtButton>
-            {
-              // TODO 设置一个60s定时器以及对应的UI效果，提示用户刷新验证码
-            }
+            <AtButton type='primary' circle onClick={handleWxLogin}>微信登录</AtButton>
           </View>
         </AtForm>
           <View style={{fontSize:'x-small',color:'#b2bec3',textAlign:'center',marginTop:'40px'}}>
