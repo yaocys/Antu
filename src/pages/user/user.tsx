@@ -34,7 +34,7 @@ const User = ()=>{
       return (
         <>
           <View className='at-row at-row__justify--center'
-                style={{backgroundColor:'white',paddingBottom:'30px'}}
+            style={{backgroundColor:'white',paddingBottom:'30px'}}
           >
             <View className='at-col-3'>
               <AtAvatar circle image={Taro.getStorageSync('headerUrl')} size='large' />

@@ -3,27 +3,30 @@
  */
 import {View} from "@tarojs/components";
 import {AtBadge} from "taro-ui";
-import {useState} from "react";
 import './index.scss'
 
 
 function BottomBarInputBox(){
 
+  const handleEdit=()=>{
+
+  }
+
   return (
     <View className='bottom_bar'>
       <View style={{margin:'10px 8px 35px 5px'}} className='at-row'>
         <View className='at-col-1 at-icon at-icon-chevron-left'
-              style={{fontSize:'30px',textAlign:'left',lineHeight:'34px'}}
+          style={{fontSize:'30px',textAlign:'left',lineHeight:'34px'}}
         />
         <View className='at-row at-row__justify--center at-col-6'>
-          <View className='commentContent at-col at-col-10'>
+          <View className='commentContent at-col at-col-10' onClick={handleEdit}>
             说两句…
           </View>
         </View>
         <View  className='at-col-2 at-row__justify--center at-row'>
           <AtBadge value={10} maxValue={99}>
             <View className=' at-icon at-icon-message'
-                  style={{fontSize:'25px',textAlign:'center',lineHeight:'34px'}}
+              style={{fontSize:'25px',textAlign:'center',lineHeight:'34px'}}
             />
           </AtBadge>
         </View>

@@ -1,13 +1,13 @@
 export default defineAppConfig({
   // 哪个路径放在最前面，打开小程序时就先加载哪个
   pages: [
-    'pages/login/login',
     'pages/index/index',
+    'pages/detail/detail',
+    'pages/login/login',
     'pages/user/user',
     'pages/info/info',
     'pages/setting/setting',
     'pages/notice/notice',
-    'pages/detail/detail',
   ],
   tabBar: {
     list: [

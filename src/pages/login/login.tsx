@@ -2,6 +2,7 @@ import {Image, Navigator, View} from "@tarojs/components";
 import React, {useEffect, useState} from "react";
 import {AtButton, AtDivider, AtForm, AtInput} from "taro-ui";
 import Taro from "@tarojs/taro";
+import {getCookies} from "../../util/utils";
 
 interface Props{
 
@@ -17,7 +18,7 @@ const Login: React.FC<Props>=()=>{
   const handleSubmit = ()=>{
     let cookie = Taro.getStorageSync('captchaOwner');
     Taro.request({
-      url: 'https://yaos.cc/community/login',
+      url: 'http://localhost:8079/community/login',
       method: 'POST',
       data: {
         username: username,
@@ -27,7 +28,7 @@ const Login: React.FC<Props>=()=>{
       },
       header:{
         "Content-Type": 'application/x-www-form-urlencoded',
-        'Cookie': cookie
+        'Cookie': `${getCookies()} ${cookie}`
       },
       credentials: 'include'
     }).then(
@@ -37,7 +38,9 @@ const Login: React.FC<Props>=()=>{
             title: response.data.msg
           })
         }else if(response.data.code===200){
-          Taro.setStorageSync('ticket',response.data.data.ticket)
+          Taro.removeStorageSync('captchaOwner');
+          Taro.setStorageSync('ticket', response.header['Set-Cookie'])
+
           Taro.setStorageSync('username',response.data.data.username)
           Taro.setStorageSync('userId',response.data.data.userId)
           Taro.setStorageSync('headerUrl',response.data.data.headerUrl)
@@ -53,14 +56,13 @@ const Login: React.FC<Props>=()=>{
   const getCaptcha = async () => {
     try {
       const response = await Taro.request({
-        url: 'https://yaos.cc/community/captcha',
+        url: 'http://localhost:8079/community/captcha',
         responseType: 'arraybuffer',
         header: {
-          'X-Requested-With': 'XMLHttpRequest'
+          'Cookie': getCookies()
         },
         success:(res)=>{
-          let captchaOwner = res.header['Set-Cookie'].replace(/,/g, ';')
-          Taro.setStorageSync('captchaOwner', captchaOwner)
+          Taro.setStorageSync('captchaOwner', res.header['Set-Cookie'])
         }
       });
       const base64 = Taro.arrayBufferToBase64(response.data);

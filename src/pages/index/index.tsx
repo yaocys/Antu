@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
-import {Image, Swiper, SwiperItem, View} from '@tarojs/components';
+import {Image, Swiper, SwiperItem, Text, View} from '@tarojs/components';
 import Taro, {useReachBottom, usePullDownRefresh} from "@tarojs/taro";
-import {AtDivider, AtTabsPane, AtTabs, AtNoticebar, AtSearchBar, AtActivityIndicator} from "taro-ui";
+import {AtDivider, AtTabsPane, AtTabs, AtNoticebar, AtSearchBar, AtActivityIndicator, AtFab} from "taro-ui";
 
 import PostItem from "../../components/PostItem/PostItem";
 
 import './index.scss'
+import {getCookies} from "../../util/utils";
 
 const PAGE_SIZE = 5
 
@@ -65,7 +66,6 @@ const Index: React.FC<Props> = () => {
   })
 
   useReachBottom(() => {
-    console.log('已经到最底下了')
     getPostList();
   })
 
@@ -74,10 +74,13 @@ const Index: React.FC<Props> = () => {
     setLoading(true);
     try {
       const response = await Taro.request({
-        url: "https://yaos.cc/community/index",
+        url: "http://localhost:8079/community/index",
         data: {
           offset: pageNum + 1,
           limit: PAGE_SIZE
+        },
+        header:{
+          'Cookie': getCookies()
         },
         complete: () => {
           setLoading(false);
@@ -99,6 +102,10 @@ const Index: React.FC<Props> = () => {
   useEffect(() => {
     getPostList();
   }, []);
+
+  const handleEdit = ()=>{
+
+  }
 
   return (
     <View className='index'>
@@ -135,21 +142,22 @@ const Index: React.FC<Props> = () => {
             >
               <SwiperItem>
                 <View className='demo-text-1'>
-                  <Image src={require('../../pic/Surface Duo - Blue Sky.jpg')}
+                  <Image src='https://yaos.cc/img/pic11.png'
                          style={{objectFit: 'cover', width: '100%'}}
                   />
                 </View>
               </SwiperItem>
               <SwiperItem>
                 <View className='demo-text-2'>
-                  <Image src={require('../../pic/Surface Family.jpg')}
+                  <Image src='https://yaos.cc/img/pic2.png'
                          style={{objectFit: 'cover', width: '100%'}}
                   />
                 </View>
               </SwiperItem>
               <SwiperItem>
                 <View className='demo-text-3'>
-                  <Image src={require('../../pic/Surface Laptop 2 - Default.jpg')}
+                  {/*{require('../../pic/Surface Laptop 2 - Default.jpg')}*/}
+                  <Image src='https://yaos.cc/img/pic3.png'
                          style={{objectFit: 'cover', width: '100%'}}
                   />
                 </View>
@@ -167,6 +175,7 @@ const Index: React.FC<Props> = () => {
                   return (
                     <PostItem
                       key={post.id}
+                      id={post.id}
                       title={post.title}
                       content={post.content}
                       date={post.createTime}
@@ -189,7 +198,7 @@ const Index: React.FC<Props> = () => {
               </View>
             }
             {
-              !hasNextPage && <AtDivider content='没有更多的数据了' fontSize={24} height={45} fontColor='#CCC'/>
+              !hasNextPage && <AtDivider content='没有更多的数据了' fontSize={24} height={45} fontColor='#CCC' />
             }
           </View>
         </AtTabsPane>
@@ -197,6 +206,11 @@ const Index: React.FC<Props> = () => {
           <View style={{fontSize: '18px', textAlign: 'center'}}>标签页三的内容</View>
         </AtTabsPane>
       </AtTabs>
+      <View style={{position:'fixed',bottom:'40px',right:'20px'}}>
+        <AtFab onClick={handleEdit} size='small'>
+          <Text className='at-fab__icon at-icon at-icon-edit' />
+        </AtFab>
+      </View>
     </View>
   )
 }

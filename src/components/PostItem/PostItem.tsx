@@ -5,6 +5,7 @@ import {AtAvatar} from "taro-ui";
 import moment from "moment";
 
 interface PostItemProps {
+  id:string,
   title: string,
   content: string,
   date: string,
@@ -18,7 +19,7 @@ interface PostItemProps {
   commentCount: number
 }
 
-const PostItem: React.FC<PostItemProps> = ({title,
+const PostItem: React.FC<PostItemProps> = ({id,title,
                                              author,
                                              date,
                                              content,
@@ -29,7 +30,7 @@ const PostItem: React.FC<PostItemProps> = ({title,
 
   const handleDetail = () => {
     Taro.navigateTo({
-      url: '/pages/detail/detail',
+      url: `/pages/detail/detail?id=${id}`,
     })
   }
 
@@ -42,7 +43,7 @@ const PostItem: React.FC<PostItemProps> = ({title,
         </View>
         <View className='at-col-10' style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
           <View
-            style={{fontWeight: 'bold', fontSize: 'x-small', marginBottom: '3px'}}
+            style={{fontWeight: 'bold', fontSize: 'x-small', marginBottom: '5px'}}
           >{username}</View>
           <View style={{fontSize: '10px', color: '#b2bec3'}}>{school + ' ' + major +' '+moment(date).format("YYYY-MM-DD")}</View>
         </View>
