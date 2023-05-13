@@ -2,6 +2,10 @@ export default defineAppConfig({
   // 哪个路径放在最前面，打开小程序时就先加载哪个
   pages: [
     'pages/index/index',
+    'pages/publish/publish',
+    'pages/profile/profile',
+    'pages/chat/chat',
+
     'pages/detail/detail',
     'pages/login/login',
     'pages/user/user',

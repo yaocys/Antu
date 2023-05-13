@@ -2,7 +2,7 @@ import {Image, Navigator, View} from "@tarojs/components";
 import React, {useEffect, useState} from "react";
 import {AtButton, AtDivider, AtForm, AtInput} from "taro-ui";
 import Taro from "@tarojs/taro";
-import {getCookies} from "../../util/utils";
+import {getCookies} from "../../utils";
 
 interface Props{
 

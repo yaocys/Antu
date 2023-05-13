@@ -6,7 +6,7 @@ import {AtDivider, AtTabsPane, AtTabs, AtNoticebar, AtSearchBar, AtActivityIndic
 import PostItem from "../../components/PostItem/PostItem";
 
 import './index.scss'
-import {getCookies} from "../../util/utils";
+import {getCookies} from "../../utils";
 
 const PAGE_SIZE = 5
 
@@ -142,15 +142,15 @@ const Index: React.FC<Props> = () => {
             >
               <SwiperItem>
                 <View className='demo-text-1'>
-                  <Image src='https://yaos.cc/img/pic11.png'
-                         style={{objectFit: 'cover', width: '100%'}}
+                  <Image src='https://yaos.cc/img/444.png'
+                    style={{objectFit: 'cover', width: '100%'}}
                   />
                 </View>
               </SwiperItem>
               <SwiperItem>
                 <View className='demo-text-2'>
                   <Image src='https://yaos.cc/img/pic2.png'
-                         style={{objectFit: 'cover', width: '100%'}}
+                    style={{objectFit: 'cover', width: '100%'}}
                   />
                 </View>
               </SwiperItem>
@@ -158,7 +158,7 @@ const Index: React.FC<Props> = () => {
                 <View className='demo-text-3'>
                   {/*{require('../../pic/Surface Laptop 2 - Default.jpg')}*/}
                   <Image src='https://yaos.cc/img/pic3.png'
-                         style={{objectFit: 'cover', width: '100%'}}
+                    style={{objectFit: 'cover', width: '100%'}}
                   />
                 </View>
               </SwiperItem>

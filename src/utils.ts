@@ -1,5 +1,5 @@
 import * as Timeago from 'timeago.js'
-import {eventCenter} from "@tarojs/taro";
+import Taro, {eventCenter} from "@tarojs/taro";
 import {IThread} from "./interfaces/thread";
 
 const Thread_DETAIL_NAVIGATE = 'thread_detail_navigate';
@@ -41,3 +41,12 @@ const betterChineseDict = (_, index) => {
 // @ts-ignore
 Timeago.register('zh', betterChineseDict)
 export default Timeago; // 导出 Timeago 实例
+
+export const getCookies = ()=>{
+  let res = '';
+  const JSESSIONID = Taro.getStorageSync('JSESSIONID');
+  const ticket = Taro.getStorageSync('ticket');
+  if(JSESSIONID) res = res +'JSESSIONID='+JSESSIONID;
+  if(ticket) res = res+ticket+';';
+  return res;
+}
