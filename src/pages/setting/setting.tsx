@@ -2,7 +2,6 @@ import { View, Text } from '@tarojs/components'
 import Taro, { useLoad } from '@tarojs/taro'
 import {AtButton, AtList, AtListItem} from "taro-ui";
 import './index.scss'
-import {getCookies} from "../../util/utils";
 
 interface Props{
 
