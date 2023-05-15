@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Image, Swiper, SwiperItem, Text, View} from '@tarojs/components';
-import Taro, {useReachBottom, usePullDownRefresh} from "@tarojs/taro";
+import Taro, {useReachBottom, usePullDownRefresh, useDidShow} from "@tarojs/taro";
 import {AtDivider, AtTabsPane, AtTabs, AtNoticebar, AtSearchBar, AtActivityIndicator, AtFab} from "taro-ui";
 
 import PostItem from "../../components/PostItem/PostItem";
@@ -45,8 +45,8 @@ const Index: React.FC<Props> = () => {
 
   const [postList, setPostList] = useState<PostListItem[]>([]);// 帖子列表
   const [loading, setLoading] = useState(false);// 加载状态
-  const [pageNum, setPageNum] = useState(0);
-  const [hasNextPage, setHasNextPage] = useState(true);
+  const [pageNum, setPageNum] = useState(0);// 当前请求内容页
+  const [hasNextPage, setHasNextPage] = useState(true);// 是否还有未加载数据
   const [current, setCurrent] = useState(1);
   const [keyword, setKeyword] = useState('');
 
@@ -103,8 +103,41 @@ const Index: React.FC<Props> = () => {
     getPostList();
   }, []);
 
-  const handleEdit = ()=>{
+  const refresh = async ()=>{
+    if (!hasNextPage || loading) return;
+    setLoading(true);
+    try {
+      const response = await Taro.request({
+        url: "http://localhost:8079/community/index",
+        data: {
+          offset: pageNum,
+          limit: PAGE_SIZE
+        },
+        header:{
+          'Cookie': getCookies()
+        },
+        complete: () => {
+          setLoading(false);
+        }
+      });
+      setPostList(postList.concat(response.data.data.list));
+      setPageNum(response.data.data.pageNum);
+      setHasNextPage(response.data.data.hasNextPage)
+    } catch (error) {
+      Taro.showToast({
+        title: '帖子加载失败'
+      })
+    }
+  }
 
+  useDidShow(async ()=>{
+
+  })
+
+  const handleEdit = ()=>{
+    Taro.navigateTo({
+      url: '/pages/publish/publish'
+    })
   }
 
   return (
@@ -206,6 +239,7 @@ const Index: React.FC<Props> = () => {
           <View style={{fontSize: '18px', textAlign: 'center'}}>标签页三的内容</View>
         </AtTabsPane>
       </AtTabs>
+      {/*悬浮发帖按钮*/}
       <View style={{position:'fixed',bottom:'40px',right:'20px'}}>
         <AtFab onClick={handleEdit} size='small'>
           <Text className='at-fab__icon at-icon at-icon-edit' />
