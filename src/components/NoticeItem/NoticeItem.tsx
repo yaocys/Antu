@@ -2,6 +2,7 @@ import {Text, View} from "@tarojs/components";
 import {AtAvatar} from "taro-ui";
 import moment from "moment/moment";
 import React from "react";
+import Taro from "@tarojs/taro";
 
 interface NoticeProps{
   user:{
@@ -16,11 +17,13 @@ const NoticeItem:React.FC<NoticeProps>=({user})=>{
   const {id,username,headerUrl} = user;
 
   const handleDetail = ()=>{
-
+    Taro.navigateTo({
+      url:"/pages/chat/chat"
+    })
   }
 
   return (
-    <View className='' style={{padding: '10px 10px', borderBottom: '1px solid #dfe6e9'}}>
+    <View className='' style={{padding: '10px 10px', borderBottom: '1px solid #dfe6e9'}} onClick={handleDetail}>
       {/*帖子作者信息*/}
       <View className='at-row at-row__justify--center' style={{marginBottom: '5px'}}>
         <View className='at-col-2'>

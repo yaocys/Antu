@@ -39,11 +39,7 @@ const Notice = ()=>{
   const [commentNotice,setCommentNotice] = useState<Notice>();
   const [likeNotice,setLikeNotice] = useState<Notice>();
   const [followNotice,setFollowNotice] = useState<Notice>();
-  const handleDetail = ()=>{
-    Taro.navigateTo({
-      url: '/pages/detail/detail',
-    })
-  }
+
   const [keyword,setKeyword] = useState('');
   const handleSearch = (value)=>{
     setKeyword(value);
@@ -109,6 +105,12 @@ const Notice = ()=>{
       })
     }
   })
+
+  const handleDetail = ()=>{
+    Taro.navigateTo({
+      url:"/pages/chat/chat"
+    })
+  }
 
   return (
     <>

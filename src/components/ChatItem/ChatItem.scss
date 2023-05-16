@@ -1,0 +1,31 @@
+.chat-bubble-right{
+  background-color: #74b9ff;
+  color: white;
+  border-radius: 20px 0 20px 20px;
+  padding: 0 20px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.chat-bubble-left{
+  background-color: #f1f1f1;
+  color: #2d3436;
+  border-radius: 0 20px 20px 20px;
+  padding: 0 20px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.xy-center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.message-avatar{
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
