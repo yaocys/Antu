@@ -36,6 +36,7 @@ const Index: React.FC<Props> = () => {
   const tab_list = [
     {title: '关注'},
     {title: '最新'},
+    {title: '热榜'},
     {title: '推荐'},
     {title: '招生'},
     {title: '院校'},
@@ -44,6 +45,7 @@ const Index: React.FC<Props> = () => {
   ];
 
   const [postList, setPostList] = useState<PostListItem[]>([]);// 帖子列表
+  const [hotList,setHotList]= useState<PostListItem[]>([])
   const [loading, setLoading] = useState(false);// 加载状态
   const [pageNum, setPageNum] = useState(0);// 当前请求内容页
   const [hasNextPage, setHasNextPage] = useState(true);// 是否还有未加载数据
@@ -68,6 +70,23 @@ const Index: React.FC<Props> = () => {
   useReachBottom(() => {
     getPostList();
   })
+
+  const getHotList = async ()=>{
+    await Taro.request({
+      url:'http://localhost:8079/community/hot',
+      header:{
+        'Cookie':getCookies()
+      },
+      success: (response)=>{
+        setHotList(response.data.data)
+      },
+      fail:()=>{
+        Taro.showToast({
+          title: '获取热榜失败'
+        })
+      }
+    })
+  }
 
   const getPostList = async () => {
     if (!hasNextPage || loading) return;
@@ -101,6 +120,7 @@ const Index: React.FC<Props> = () => {
    */
   useEffect(() => {
     getPostList();
+    getHotList()
   }, []);
 
   const refresh = async ()=>{
@@ -235,8 +255,32 @@ const Index: React.FC<Props> = () => {
             }
           </View>
         </AtTabsPane>
+        {/*热榜*/}
         <AtTabsPane current={current} index={2}>
-          <View style={{fontSize: '18px', textAlign: 'center'}}>标签页三的内容</View>
+          <View style={{padding: '0 20px 0 20px'}}>
+            {
+              hotList?.map((post,index) => {
+                return (
+                  <PostItem
+                    key={post.id}
+                    id={post.id}
+                    title={post.title}
+                    content={post.content}
+                    date={post.createTime}
+                    author={{
+                      username: post.username,
+                      headerUrl: post.headerUrl,
+                      school: '西华大学',
+                      major: '计算机'
+                    }}
+                    likeCount={post.likeCount}
+                    commentCount={post.commentCount}
+                    index={index}
+                  />
+                )
+              })
+            }
+          </View>
         </AtTabsPane>
       </AtTabs>
       {/*悬浮发帖按钮*/}

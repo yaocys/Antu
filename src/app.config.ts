@@ -6,7 +6,6 @@ export default defineAppConfig({
     'pages/publish/publish',
     'pages/profile/profile',
     'pages/chat/chat',
-
     'pages/detail/detail',
     'pages/login/login',
     'pages/user/user',

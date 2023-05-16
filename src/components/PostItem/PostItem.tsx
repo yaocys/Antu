@@ -1,7 +1,7 @@
 import React from "react";
 import Taro from "@tarojs/taro";
 import {Text, View} from "@tarojs/components";
-import {AtAvatar} from "taro-ui";
+import {AtAvatar, AtTag} from "taro-ui";
 import moment from "moment";
 
 interface PostItemProps {
@@ -16,7 +16,8 @@ interface PostItemProps {
     major: string
   },
   likeCount: number,
-  commentCount: number
+  commentCount: number,
+  index?: number
 }
 
 const PostItem: React.FC<PostItemProps> = ({id,title,
@@ -24,9 +25,37 @@ const PostItem: React.FC<PostItemProps> = ({id,title,
                                              date,
                                              content,
                                              likeCount,
-                                             commentCount}) => {
+                                             commentCount,index}) => {
 
   const {username, school, major,headerUrl} = author;
+
+  const showRanking=()=>{
+    let color;
+    if(index!==undefined) {
+      switch (index){
+        case 0:
+          color='#ff7675'
+          break;
+        case 1:
+          color='#fdcb6e'
+          break
+        case 2:
+          color='#74b9ff'
+          break
+        default:
+          color='#b2bec3'
+      }
+      return (
+        <View className='at-col-1'>
+          <AtTag type='secondary' circle size='small'>
+            <Text style={{color:color,fontWeight:'bolder',fontSize:'large'}}>{index+1}</Text>
+          </AtTag>
+        </View>
+      )
+    }else return (
+      <View className='at-col-1' />
+    )
+  }
 
   const handleDetail = () => {
     Taro.navigateTo({
@@ -41,12 +70,15 @@ const PostItem: React.FC<PostItemProps> = ({id,title,
         <View className='at-col-2'>
           <AtAvatar circle image={headerUrl} size='small' />
         </View>
-        <View className='at-col-10' style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+        <View className='at-col-9' style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
           <View
             style={{fontWeight: 'bold', fontSize: 'x-small', marginBottom: '5px'}}
           >{username}</View>
           <View style={{fontSize: '10px', color: '#b2bec3'}}>{school + ' ' + major +' '+moment(date).format("YYYY-MM-DD")}</View>
         </View>
+        {
+          showRanking()
+        }
       </View>
       {/*标题与内容*/}
       <View onClick={handleDetail}>
@@ -66,7 +98,7 @@ const PostItem: React.FC<PostItemProps> = ({id,title,
         </View>
       </View>
       <View className='at-row at-row__justify--center at-row__align-content--between'
-        style={{fontSize: 'small', marginBottom: '8px'}}
+        style={{fontSize: 'small', marginBottom: '8px',color:'#2d3436'}}
       >
         <View className='at-col-4 at-icon at-icon-eye' style={{}}>
           &nbsp;<Text style={{fontSize: 'x-small'}}>1.2k</Text>
