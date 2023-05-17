@@ -82,7 +82,8 @@ const Index: React.FC<Props> = () => {
       },
       fail:()=>{
         Taro.showToast({
-          title: '获取热榜失败'
+          title: '获取热榜失败',
+          icon:'error'
         })
       }
     })
@@ -110,7 +111,8 @@ const Index: React.FC<Props> = () => {
       setHasNextPage(response.data.data.hasNextPage)
     } catch (error) {
       Taro.showToast({
-        title: '帖子加载失败'
+        title: '帖子加载失败',
+        icon:'error'
       })
     }
   }
@@ -121,6 +123,9 @@ const Index: React.FC<Props> = () => {
   useEffect(() => {
     getPostList();
     getHotList()
+    Taro.showTabBarRedDot({
+      index:1
+    })
   }, []);
 
   const refresh = async ()=>{

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { View } from '@tarojs/components'
 import {AtActivityIndicator, AtButton, AtDivider, AtForm, AtInput, AtList, AtListItem, AtSearchBar} from "taro-ui";
 import Taro, {useDidShow} from "@tarojs/taro";
@@ -44,6 +44,12 @@ const Notice = ()=>{
   const handleSearch = (value)=>{
     setKeyword(value);
   }
+
+  useEffect(()=>{
+    Taro.hideTabBarRedDot({
+      index:1
+    })
+  })
 
   const handleChange = ()=>{
 
@@ -100,9 +106,9 @@ const Notice = ()=>{
       })
     }else {
       // 没登陆就跳转到登录页
-      Taro.navigateTo({
+/*      Taro.navigateTo({
         url :'/pages/login/login'
-      })
+      })*/
     }
   })
 

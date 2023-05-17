@@ -10,6 +10,8 @@ interface Props{
 
 const Login: React.FC<Props>=()=>{
 
+
+
   const [username,setUsername] = useState('');
   const [password,setPassword] = useState('');
   const [captcha,setCaptcha] = useState('');
@@ -69,7 +71,8 @@ const Login: React.FC<Props>=()=>{
       setCaptcha(`data:image/png;base64,${base64}`)
     } catch (error) {
       Taro.showToast({
-        title: '验证码加载失败'
+        title: '验证码加载失败',
+        icon:'error'
       })
     }
   }
@@ -133,21 +136,24 @@ const Login: React.FC<Props>=()=>{
                   }
                 },fail:()=>{
                   Taro.showToast({
-                    title: '请求登录失败'
+                    title: '请求登录失败',
+                    icon:'error'
                   })
                 }
               })
             }
           },fail:()=>{
             Taro.showToast({
-              title: '获取code失败'
+              title: '获取code失败',
+              icon:'error'
             })
           }
         })
       },
       fail:()=>{
         Taro.showToast({
-          title:'获取用户信息失败'
+          title:'获取用户信息失败',
+          icon:'error'
         })
       }
     })
@@ -194,7 +200,9 @@ const Login: React.FC<Props>=()=>{
             <AtButton type='primary' circle formType='submit'>登录</AtButton>
           </View>
           <View  style={{margin:'30px 15px 8px 15px'}}>
-            <AtButton type='secondary' circle>去注册</AtButton>
+            <AtButton type='secondary' circle
+              onClick={()=>Taro.navigateTo({url:'/pages/register/register'})}
+            >去注册</AtButton>
           </View>
           <AtDivider content='一键登录' height='30px' fontSize='26' />
           <View  style={{margin:'8px 15px'}}>
