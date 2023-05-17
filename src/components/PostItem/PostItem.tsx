@@ -10,6 +10,7 @@ interface PostItemProps {
   content: string,
   date: string,
   author: {
+    userId:string,
     username: string,
     headerUrl:string,
     school: string,
@@ -27,7 +28,7 @@ const PostItem: React.FC<PostItemProps> = ({id,title,
                                              likeCount,
                                              commentCount,index}) => {
 
-  const {username, school, major,headerUrl} = author;
+  const {userId,username, school, major,headerUrl} = author;
 
   const showRanking=()=>{
     let color;
@@ -63,10 +64,16 @@ const PostItem: React.FC<PostItemProps> = ({id,title,
     })
   }
 
+  const handleProfile = () => {
+    Taro.navigateTo({
+      url: `/pages/profile/profile?id=${userId}`,
+    })
+  }
+
   return (
     <View className='' style={{margin: '10px 0', borderBottom: '1px solid #dfe6e9'}}>
       {/*帖子作者信息*/}
-      <View className='at-row at-row__justify--center' style={{marginBottom: '5px'}}>
+      <View className='at-row at-row__justify--center' style={{marginBottom: '5px'}} onClick={handleProfile}>
         <View className='at-col-2'>
           <AtAvatar circle image={headerUrl} size='small' />
         </View>

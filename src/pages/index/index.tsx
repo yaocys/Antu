@@ -238,6 +238,7 @@ const Index: React.FC<Props> = () => {
                       content={post.content}
                       date={post.createTime}
                       author={{
+                        userId:post.userId,
                         username: post.username,
                         headerUrl: post.headerUrl,
                         school: '西华大学',
