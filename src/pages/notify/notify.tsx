@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import {View} from "@tarojs/components";
-import NoticeItem from "../../components/NoticeItem/NoticeItem";
 import Taro, {useDidShow} from "@tarojs/taro";
 import {getCookies} from "../../utils";
 import NotifyItem from "../../components/NotifyItem/NotifyItem";
+import {UserInfo} from "../../interfaces/userInfo";
 
 interface Props{
 
@@ -13,11 +13,7 @@ interface ListItem{
   entityType:number,
   entityId:number,
   postId:number,
-  user:{
-    id:number,
-    username:string,
-    headerUrl:string
-  },
+  user:UserInfo,
   createTime:string
 }
 

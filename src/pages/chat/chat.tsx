@@ -1,7 +1,7 @@
-import {Form, Input, View} from "@tarojs/components";
-import ChatItem from "../../components/ChatItem/ChatItem";
-import {AtBadge, AtButton, AtDivider, AtFloatLayout, AtTextarea} from "taro-ui";
+import { View} from "@tarojs/components";
+import { AtDivider} from "taro-ui";
 import React from "react";
+import ChatItem from "../../components/ChatItem/ChatItem";
 
 import './chat.scss'
 
@@ -26,10 +26,10 @@ const Chat:React.FC<Props>=()=>{
             </View>
           </View>
           <View className='at-col-1 at-icon at-icon-image'
-                style={{fontSize:'25px',textAlign:'right',lineHeight:'34px'}}
+            style={{fontSize:'25px',textAlign:'right',lineHeight:'34px'}}
           />
           <View className='at-col-2 at-icon at-icon-add-circle'
-                style={{fontSize:'25px',textAlign:'center',lineHeight:'34px'}}
+            style={{fontSize:'25px',textAlign:'center',lineHeight:'34px'}}
           />
         </View>
       </View>

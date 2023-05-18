@@ -3,7 +3,7 @@ import {Text, View} from "@tarojs/components";
 import moment from "moment/moment";
 
 interface Props{
-  id:string,
+  id:number,
   username:string,
   headerUrl:string,
   followTime:string,

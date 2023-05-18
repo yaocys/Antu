@@ -1,9 +1,8 @@
-import {useEffect, useState} from 'react'
-import { View, Text } from '@tarojs/components'
+import { useState} from 'react'
+import { View, } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
 
-import {AtAvatar, AtButton, AtGrid, AtList, AtListItem} from "taro-ui";
-
+import {AtAvatar, AtButton,  AtList, AtListItem} from "taro-ui";
 
 import './index.scss'
 

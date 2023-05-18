@@ -6,17 +6,11 @@ import {useEffect, useState} from "react";
 import FolloweeCard from "../../components/FolloweeCard/FolloweeCard";
 import FollowerCard from "../../components/FollowerCard/FollowerCard";
 import {getCookies} from "../../utils";
+import {UserInfo} from "../../interfaces/userInfo";
 
 
 interface Props{
 
-}
-
-interface UserInfo{
-  id:string,
-  username:string,
-  headerUrl:string,
-  createTime:string
 }
 
 interface ListItem{

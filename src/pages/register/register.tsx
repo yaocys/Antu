@@ -1,5 +1,5 @@
 import {Image, View} from "@tarojs/components";
-import {AtButton, AtDivider, AtForm, AtInput} from "taro-ui";
+import {AtButton, AtForm, AtInput} from "taro-ui";
 import React, {useState} from "react";
 import Taro from "@tarojs/taro";
 

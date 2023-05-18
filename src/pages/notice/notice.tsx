@@ -1,11 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { View } from '@tarojs/components'
 import {
-  AtActivityIndicator,
-  AtButton,
-  AtDivider,
-  AtForm,
-  AtInput,
   AtList,
   AtListItem,
   AtSearchBar,
@@ -15,6 +10,7 @@ import Taro, {useDidShow} from "@tarojs/taro";
 import './index.scss'
 import {getCookies} from "../../utils";
 import NoticeItem from "../../components/NoticeItem/NoticeItem";
+import {UserInfo} from "../../interfaces/userInfo";
 
 interface Message{
   id:number,
@@ -26,12 +22,6 @@ interface Message{
   createTime:string
 }
 
-interface User{
-  id:number,
-  username:string,
-  headerUrl:string
-}
-
 interface Notice{
   count:number,
   entityId:number,
@@ -39,10 +29,14 @@ interface Notice{
   message:Message,
   postId:number,
   unread:string,
-  user:User
+  user:UserInfo
 }
 
-const Notice = ()=>{
+interface Props{
+
+}
+
+const Notice:React.FC<Props> = ()=>{
 
   const [letterUnreadCount,setLetterUnreadCount] = useState(' ');
   const [noticeUnreadCount,setNoticeUnreadCount] = useState(' ');
@@ -96,14 +90,13 @@ const Notice = ()=>{
         url:'http://localhost:8079/community/letter/list',
         data:{
           offset: 1,
-          limit: 100000
+          limit: 1000
         },
         header:{
           'Cookie':getCookies()
         },
         success:(response)=>{
           const code = response.data.code
-          const data = response.data.data
           if(code===200){
             Taro.showToast({
               title: '获取私信列表成功'

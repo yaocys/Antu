@@ -1,5 +1,5 @@
-import {Picker, Text, View} from "@tarojs/components";
-import {AtButton, AtForm, AtIndexes, AtInput, AtList, AtListItem, AtTextarea} from "taro-ui";
+import {Picker, View} from "@tarojs/components";
+import {AtButton, AtForm, AtInput, AtList, AtListItem, AtTextarea} from "taro-ui";
 import {useState} from "react";
 import Taro from "@tarojs/taro";
 import {getCookies} from "../../utils";

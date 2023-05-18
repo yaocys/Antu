@@ -1,22 +1,5 @@
 import * as Timeago from 'timeago.js'
-import Taro, {eventCenter} from "@tarojs/taro";
-import {IThread} from "./interfaces/thread";
-
-const Thread_DETAIL_NAVIGATE = 'thread_detail_navigate';
-
-export {Thread_DETAIL_NAVIGATE}
-
-export interface IThreadProps extends IThread {
-  tid: string
-}
-
-export const GlobalState = {
-  thread: {} as IThreadProps
-}
-
-eventCenter.on(Thread_DETAIL_NAVIGATE, (thread: IThreadProps) => {
-  GlobalState.thread = thread
-})
+import Taro from "@tarojs/taro";
 
 // 数字/英文与中文之间需要加空格
 const betterChineseDict = (_, index) => {
