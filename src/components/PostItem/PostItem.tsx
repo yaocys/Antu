@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import Taro from "@tarojs/taro";
 import {Text, View} from "@tarojs/components";
 import {AtAvatar, AtTag} from "taro-ui";
@@ -29,6 +29,12 @@ const PostItem: React.FC<PostItemProps> = ({id,title,
                                              commentCount,index}) => {
 
   const {userId,username, school, major,headerUrl} = author;
+  const [likeStatus,setLikeStatus] = useState('at-icon-heart');
+
+  const handleLike=()=>{
+    if(likeStatus==='at-icon-heart') setLikeStatus('at-icon-heart-2')
+    else setLikeStatus('at-icon-heart')
+  }
 
   const showRanking=()=>{
     let color;
@@ -113,8 +119,10 @@ const PostItem: React.FC<PostItemProps> = ({id,title,
         <View className='at-col-4 at-icon at-icon-message' style={{textAlign: 'center'}}>
           &nbsp;<Text style={{fontSize: 'x-small'}}>{commentCount}</Text>
         </View>
-        <View className='at-col-4 at-icon at-icon-heart' style={{textAlign: 'right'}}>
-          &nbsp;<Text style={{fontSize: 'x-small'}}>{likeCount}</Text>
+        <View className='at-col-4' style={{display:'flex',justifyContent:'flex-end'}}>
+          <View className={`at-icon ${likeStatus}`} onClick={handleLike}>
+            &nbsp;<Text style={{fontSize: 'x-small'}}>{likeCount}</Text>
+          </View>
         </View>
       </View>
     </View>

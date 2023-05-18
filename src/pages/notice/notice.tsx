@@ -1,6 +1,16 @@
 import React, {useEffect, useState} from 'react'
 import { View } from '@tarojs/components'
-import {AtActivityIndicator, AtButton, AtDivider, AtForm, AtInput, AtList, AtListItem, AtSearchBar} from "taro-ui";
+import {
+  AtActivityIndicator,
+  AtButton,
+  AtDivider,
+  AtForm,
+  AtInput,
+  AtList,
+  AtListItem,
+  AtSearchBar,
+  AtSegmentedControl
+} from "taro-ui";
 import Taro, {useDidShow} from "@tarojs/taro";
 import './index.scss'
 import {getCookies} from "../../utils";
@@ -39,6 +49,7 @@ const Notice = ()=>{
   const [commentNotice,setCommentNotice] = useState<Notice>();
   const [likeNotice,setLikeNotice] = useState<Notice>();
   const [followNotice,setFollowNotice] = useState<Notice>();
+  const [current,setCurrent] = useState(0);
 
   const [keyword,setKeyword] = useState('');
   const handleSearch = (value)=>{
@@ -112,10 +123,14 @@ const Notice = ()=>{
     }
   })
 
-  const handleDetail = ()=>{
+  const handleDetail = (type:string)=>{
     Taro.navigateTo({
-      url:"/pages/chat/chat"
+      url:`/pages/notify/notify?type=${type}`
     })
+  }
+
+  const handleClick = (value)=>{
+    setCurrent(value)
   }
 
   return (
@@ -126,55 +141,70 @@ const Notice = ()=>{
         onActionClick={handleSearch}
       />
 
-      <View>
-        <AtButton type='secondary' size='small'>一键已读</AtButton>
+      <View style={{padding: '0 10px'}}>
+        {/*<AtButton type='secondary' size='small'>一键已读</AtButton>*/}
         {/*帖子列表*/}
-        <AtList>
-          <AtListItem
-            title='评论'
-            note='用户 张三 评论了你的帖子'
-            arrow='right'
-            hasBorder={false}
-            thumb='http://static.nowcoder.com/images/head/reply.png'
-            onClick={handleDetail}
-            extraText={`${commentNotice?.unread}/${commentNotice?.count}`}
-          />
-          <AtListItem
-            title='点赞'
-            note='用户 李四 点赞了你的帖子'
-            arrow='right'
-            hasBorder={false}
-            thumb='http://static.nowcoder.com/images/head/like.png'
-            extraText={`${likeNotice?.unread}/${likeNotice?.count}`}
-          />
-          <AtListItem
-            title='关注'
-            note='用户 王五 关注了你'
-            arrow='right'
-            hasBorder={false}
-            thumb='http://static.nowcoder.com/images/head/follow.png'
-            extraText={`${followNotice?.unread}/${followNotice?.count}`}
-          />
-          {/*分割线*/}
-          <AtDivider content='以下是用户私信' fontSize={24} height={45} fontColor='#CCC' />
-        </AtList>
-        <View>
-          <NoticeItem user={{
-            id:13,
-            username:'张三',
-            headerUrl:'http://static.nowcoder.com/images/head/reply.png'}}
-          />
-{/*          <NoticeItem user={{
-            id:13,
-            username:'张三',
-            headerUrl:'http://static.nowcoder.com/images/head/reply.png'}}
-          />
-          <NoticeItem user={{
-            id:13,
-            username:'张三',
-            headerUrl:'http://static.nowcoder.com/images/head/reply.png'}}
-          />*/}
-        </View>
+        <AtSegmentedControl
+          values={[`系统通知（${noticeUnreadCount}）`, `用户私信（${letterUnreadCount}）`]}
+          onClick={handleClick}
+          current={current}
+        />
+        {
+          current === 0
+            ? <View className='tab-content'>
+              <AtList>
+                <AtListItem
+                  title='评论'
+                  note='用户 张三 评论了你的帖子'
+                  arrow='right'
+                  hasBorder={false}
+                  thumb='http://static.nowcoder.com/images/head/reply.png'
+                  onClick={()=>handleDetail('comment')}
+                  extraText={`${commentNotice?.unread}/${commentNotice?.count}`}
+                />
+                <AtListItem
+                  title='点赞'
+                  note='用户 李四 点赞了你的帖子'
+                  arrow='right'
+                  hasBorder={false}
+                  thumb='http://static.nowcoder.com/images/head/like.png'
+                  onClick={()=>handleDetail('like')}
+                  extraText={`${likeNotice?.unread}/${likeNotice?.count}`}
+                />
+                <AtListItem
+                  title='关注'
+                  note='用户 王五 关注了你'
+                  arrow='right'
+                  hasBorder={false}
+                  thumb='http://static.nowcoder.com/images/head/follow.png'
+                  onClick={()=>handleDetail('follow')}
+                  extraText={`${followNotice?.unread}/${followNotice?.count}`}
+                />
+              </AtList>
+            </View>
+            : null
+        }
+        {
+          current === 1
+            ? <View className='tab-content'>
+              <NoticeItem user={{
+                id:13,
+                username:'张三',
+                headerUrl:'http://static.nowcoder.com/images/head/reply.png'}}
+              />
+              <NoticeItem user={{
+                id:13,
+                username:'张三',
+                headerUrl:'http://static.nowcoder.com/images/head/reply.png'}}
+              />
+              <NoticeItem user={{
+                id:13,
+                username:'张三',
+                headerUrl:'http://static.nowcoder.com/images/head/reply.png'}}
+              />
+            </View>
+            : null
+        }
       </View>
     </>
 
