@@ -90,7 +90,7 @@ const Notice:React.FC<Props> = ()=>{
         url:'http://localhost:8079/community/letter/list',
         data:{
           offset: 1,
-          limit: 1000
+          limit: 5
         },
         header:{
           'Cookie':getCookies()
@@ -146,33 +146,40 @@ const Notice:React.FC<Props> = ()=>{
           current === 0
             ? <View className='tab-content'>
               <AtList>
-                <AtListItem
-                  title='评论'
-                  note='用户 张三 评论了你的帖子'
-                  arrow='right'
-                  hasBorder={false}
-                  thumb='http://static.nowcoder.com/images/head/reply.png'
-                  onClick={()=>handleDetail('comment')}
-                  extraText={`${commentNotice?.unread}/${commentNotice?.count}`}
-                />
-                <AtListItem
-                  title='点赞'
-                  note='用户 李四 点赞了你的帖子'
-                  arrow='right'
-                  hasBorder={false}
-                  thumb='http://static.nowcoder.com/images/head/like.png'
-                  onClick={()=>handleDetail('like')}
-                  extraText={`${likeNotice?.unread}/${likeNotice?.count}`}
-                />
-                <AtListItem
-                  title='关注'
-                  note='用户 王五 关注了你'
-                  arrow='right'
-                  hasBorder={false}
-                  thumb='http://static.nowcoder.com/images/head/follow.png'
-                  onClick={()=>handleDetail('follow')}
-                  extraText={`${followNotice?.unread}/${followNotice?.count}`}
-                />
+                {
+                  // 通知不为空才显示
+                  commentNotice&&<AtListItem
+                    title='评论'
+                    note='用户 张三 评论了你的帖子'
+                    arrow='right'
+                    hasBorder={false}
+                    thumb='http://static.nowcoder.com/images/head/reply.png'
+                    onClick={()=>handleDetail('comment')}
+                    extraText={`${commentNotice?.unread}/${commentNotice?.count}`}
+                  />
+                }
+                {
+                  likeNotice && <AtListItem
+                    title='点赞'
+                    note='用户 李四 点赞了你的帖子'
+                    arrow='right'
+                    hasBorder={false}
+                    thumb='http://static.nowcoder.com/images/head/like.png'
+                    onClick={()=>handleDetail('like')}
+                    extraText={`${likeNotice?.unread}/${likeNotice?.count}`}
+                  />
+                }
+                {
+                  followNotice && <AtListItem
+                    title='关注'
+                    note='用户 王五 关注了你'
+                    arrow='right'
+                    hasBorder={false}
+                    thumb='http://static.nowcoder.com/images/head/follow.png'
+                    onClick={()=>handleDetail('follow')}
+                    extraText={`${followNotice?.unread}/${followNotice?.count}`}
+                  />
+                }
               </AtList>
             </View>
             : null

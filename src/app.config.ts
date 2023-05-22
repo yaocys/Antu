@@ -3,6 +3,7 @@ export default defineAppConfig({
   pages: [
     'pages/index/index',
     'pages/search/search',
+    'pages/checkIn/checkIn',
     'pages/result/result',
     'pages/notice/notice',
     'pages/notify/notify',

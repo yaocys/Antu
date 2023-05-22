@@ -3,6 +3,7 @@ import Taro from "@tarojs/taro";
 import {Text, View} from "@tarojs/components";
 import {AtAvatar, AtTag} from "taro-ui";
 import moment from "moment";
+import {handleProfile} from "../../utils";
 
 interface PostItemProps {
   id:string,
@@ -70,16 +71,12 @@ const PostItem: React.FC<PostItemProps> = ({id,title,
     })
   }
 
-  const handleProfile = () => {
-    Taro.navigateTo({
-      url: `/pages/profile/profile?id=${userId}`,
-    })
-  }
+
 
   return (
     <View className='' style={{margin: '10px 0', borderBottom: '1px solid #dfe6e9'}}>
       {/*帖子作者信息*/}
-      <View className='at-row at-row__justify--center' style={{marginBottom: '5px'}} onClick={handleProfile}>
+      <View className='at-row at-row__justify--center' style={{marginBottom: '5px'}} onClick={()=>handleProfile(userId)}>
         <View className='at-col-2'>
           <AtAvatar circle image={headerUrl} size='small' />
         </View>

@@ -1,15 +1,21 @@
 import { View} from "@tarojs/components";
 import { AtDivider} from "taro-ui";
-import React from "react";
+import React, {useEffect} from "react";
 import ChatItem from "../../components/ChatItem/ChatItem";
 
 import './chat.scss'
+import Taro from "@tarojs/taro";
 
 interface Props{
 
 }
 
 const Chat:React.FC<Props>=()=>{
+  useEffect(()=>{
+    Taro.setNavigationBarTitle({
+      title: '张三'
+    })
+  })
   return (
     <>
     <View style={{letterSpacing:'1px',lineHeight:1.5,padding:'0 10px'}}>

@@ -48,7 +48,7 @@ const Login: React.FC<Props>=()=>{
           Taro.setStorageSync('headerUrl',response.data.data.headerUrl)
 
           Taro.switchTab({
-            url:'/pages/user/user'
+            url:'/pages/index/index'
           })
         }
       }
@@ -113,12 +113,16 @@ const Login: React.FC<Props>=()=>{
           success: (res)=>{
             if(res.code){
               Taro.request({
-                url: 'https://yaos.cc/community/wechatLogin',
+                url: 'http://localhost:8079/community/wechatLogin',
                 method: 'POST',
                 data: {
                   code: res.code,
                   nickname: nickName,
                   headerUrl: avatarUrl
+                },
+                header:{
+                  "Content-Type": 'application/x-www-form-urlencoded',
+                  'Cookie':getCookies()
                 },
                 success:(response)=>{
                   if(response.data.code===400){
@@ -126,12 +130,13 @@ const Login: React.FC<Props>=()=>{
                       title: response.data.msg
                     })
                   }else if(response.data.code===200){
-                    Taro.setStorageSync('ticket',response.data.data.ticket)
+                    Taro.setStorageSync('ticket',`ticket=${response.data.data.ticket}`)
+                    Taro.setStorageSync('userId',response.data.data.userId)
                     Taro.setStorageSync('username',nickName)
                     Taro.setStorageSync('headerUrl',avatarUrl)
 
                     Taro.switchTab({
-                      url:'/pages/user/user'
+                      url:'/pages/index/index'
                     })
                   }
                 },fail:()=>{

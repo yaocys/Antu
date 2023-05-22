@@ -1,7 +1,8 @@
-import { View, Text } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import Taro, { useLoad } from '@tarojs/taro'
 import {AtButton, AtList, AtListItem} from "taro-ui";
 import './index.scss'
+import {getCookies} from "../../utils";
 
 interface Props{
 
@@ -9,7 +10,7 @@ interface Props{
 
 const Setting:React.FC<Props>=()=>{
   useLoad(() => {
-    console.log('Page loaded.')
+
   })
 
   const handleClick = ()=>{
@@ -20,7 +21,7 @@ const Setting:React.FC<Props>=()=>{
     Taro.request({
       url:'http://localhost:8079/community/logout',
       header:{
-        'Cookie': Taro.getStorageSync('ticket')
+        'Cookie': getCookies()
       }
     })
     Taro.clearStorage();

@@ -5,6 +5,7 @@ import Taro, { useDidShow } from '@tarojs/taro'
 import {AtAvatar, AtButton,  AtList, AtListItem} from "taro-ui";
 
 import './index.scss'
+import {handleProfile} from "../../utils";
 
 const User = ()=>{
 
@@ -35,7 +36,7 @@ const User = ()=>{
           <View className='at-row at-row__justify--center'
             style={{backgroundColor:'white',paddingBottom:'30px'}}
           >
-            <View className='at-col-3'>
+            <View className='at-col-3' onClick={()=>handleProfile(Taro.getStorageSync('userId'))}>
               <AtAvatar circle image={Taro.getStorageSync('headerUrl')} size='large' />
             </View>
             <View className='at-col-5' style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
@@ -43,7 +44,7 @@ const User = ()=>{
               <View style={{fontSize: '10px', color: '#b2bec3'}}>上海财经大学 计算机类</View>
             </View>
             <View className='at-col-3 at-col__align--center'>
-              <AtButton type='primary' size='small' circle style={{fontSize: 'x-small'}}>个人中心</AtButton>
+              <AtButton type='primary' size='small' circle style={{fontSize: 'x-small'}}>个人主页</AtButton>
             </View>
           </View>
           <View className='at-row at-row__justify--center' style={{paddingBottom:'25px',backgroundColor:'white',marginBottom:'5px'}}>
@@ -89,8 +90,9 @@ const User = ()=>{
         <AtListItem title='&nbsp;金币任务' arrow='right'
           iconInfo={{ size: 20, color: '#fdcb6e', value: 'list', }}
         />
-        <AtListItem title='&nbsp;我的关注' arrow='right'
+        <AtListItem title='&nbsp;签到' arrow='right'
           iconInfo={{ size: 20, color: '#00cec9', value: 'tags', }}
+          onClick={()=>Taro.navigateTo({url:'/pages/checkIn/checkIn'})}
         />
         <AtListItem title='&nbsp;深色模式'
           iconInfo={{ size: 20, color: '#2d3436', value: 'loading', }}

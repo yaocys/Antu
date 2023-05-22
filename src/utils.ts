@@ -33,3 +33,9 @@ export const getCookies = ()=>{
   if(ticket) res = res+ticket+';';
   return res;
 }
+
+export const handleProfile = (user_id) => {
+  Taro.navigateTo({
+    url: `/pages/profile/profile?id=${user_id}`,
+  })
+}
