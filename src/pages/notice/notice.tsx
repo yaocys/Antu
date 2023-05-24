@@ -4,7 +4,7 @@ import {
   AtList,
   AtListItem,
   AtSearchBar,
-  AtSegmentedControl
+  AtSegmentedControl, AtSwipeAction
 } from "taro-ui";
 import Taro, {useDidShow} from "@tarojs/taro";
 import './index.scss'
@@ -32,6 +32,18 @@ interface Notice{
   user:UserInfo
 }
 
+interface Chat{
+  id:number,
+  fromId:number,
+  toId:number,
+  conversationId:string,
+  content:string,
+  createTime:string,
+  letterCount:number,
+  unreadCount:number,
+  target:UserInfo
+}
+
 interface Props{
 
 }
@@ -44,6 +56,7 @@ const Notice:React.FC<Props> = ()=>{
   const [likeNotice,setLikeNotice] = useState<Notice>();
   const [followNotice,setFollowNotice] = useState<Notice>();
   const [current,setCurrent] = useState(0);
+  const [letterList,setLetterList] = useState<Chat[]>([])
 
   const [keyword,setKeyword] = useState('');
   const handleSearch = (value)=>{
@@ -98,6 +111,24 @@ const Notice:React.FC<Props> = ()=>{
         success:(response)=>{
           const code = response.data.code
           if(code===200){
+            setLetterList(response.data.data.conversations.list)
+/*            const list = response.data.data.conversations.list.map((item)=>({
+              id:item.id,
+              fromId:item.fromId,
+              toId:item.toId,
+              conversationId:item.conversationId,
+              content:item.content,
+              createTime:item.createTime,
+              letterCount:item.letterCount,
+              unreadCount:item.unreadCount,
+              target:{
+                id:item.target.id,
+                username:item.target.username,
+                headerUrl:item.target.headerUrl,
+                createTime:item.target.createTime
+              }
+            }))
+            setLetterList(list)*/
             Taro.showToast({
               title: '获取私信列表成功'
             })
@@ -169,6 +200,18 @@ const Notice:React.FC<Props> = ()=>{
                     extraText={`${likeNotice?.unread}/${likeNotice?.count}`}
                   />
                 }
+{/*                <AtSwipeAction options={[
+                  {
+                    text: '删除',
+                    style: {
+                      backgroundColor: '#FF4949',
+                      width: 36
+                    }
+                  }
+                ]} areaWidth={Taro.getSystemInfoSync().screenWidth} maxDistance={60}
+                >
+                  <AtListItem title='Item2' />
+                </AtSwipeAction>*/}
                 {
                   followNotice && <AtListItem
                     title='关注'
@@ -187,21 +230,21 @@ const Notice:React.FC<Props> = ()=>{
         {
           current === 1
             ? <View className='tab-content'>
-              <NoticeItem user={{
-                id:13,
-                username:'张三',
-                headerUrl:'http://static.nowcoder.com/images/head/reply.png'}}
-              />
-              <NoticeItem user={{
-                id:13,
-                username:'张三',
-                headerUrl:'http://static.nowcoder.com/images/head/reply.png'}}
-              />
-              <NoticeItem user={{
-                id:13,
-                username:'张三',
-                headerUrl:'http://static.nowcoder.com/images/head/reply.png'}}
-              />
+              {
+                letterList.map((letter)=>(
+                  <NoticeItem user={{
+                    id:letter.target.id,
+                    username:letter.target.username,
+                    headerUrl:letter.target.headerUrl,
+                  }}
+                    content={letter.content}
+                    createTime={letter.createTime}
+                    letterCount={letter.letterCount}
+                    unreadCount={letter.unreadCount}
+                    conversationId={letter.conversationId}
+                  />
+                ))
+              }
             </View>
             : null
         }

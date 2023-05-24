@@ -73,7 +73,7 @@ const Index: React.FC<Props> = () => {
 
   const getHotList = async ()=>{
     await Taro.request({
-      url:'http://localhost:8079/community/hot',
+      url:'https://yaos.cc/community/hot',
       header:{
         'Cookie':getCookies()
       },
@@ -94,7 +94,7 @@ const Index: React.FC<Props> = () => {
     setLoading(true);
     try {
       const response = await Taro.request({
-        url: "http://localhost:8079/community/index",
+        url: "https://yaos.cc/community/index",
         data: {
           offset: pageNum + 1,
           limit: PAGE_SIZE
@@ -133,7 +133,7 @@ const Index: React.FC<Props> = () => {
     setLoading(true);
     try {
       const response = await Taro.request({
-        url: "http://localhost:8079/community/index",
+        url: "https://yaos.cc/community/index",
         data: {
           offset: pageNum,
           limit: PAGE_SIZE

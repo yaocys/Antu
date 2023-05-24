@@ -10,9 +10,11 @@ import {handleProfile} from "../../utils";
 const User = ()=>{
 
   const [login,setLogin] = useState(!!Taro.getStorageSync('ticket'));
+  const [header,setHeader]= useState<string>(Taro.getStorageSync('headerUrl'))
 
   useDidShow(()=>{
     setLogin(!!Taro.getStorageSync('ticket'))
+    setHeader(Taro.getStorageSync('headerUrl'))
   })
 
   const handleClick = ()=>{
@@ -37,7 +39,7 @@ const User = ()=>{
             style={{backgroundColor:'white',paddingBottom:'30px'}}
           >
             <View className='at-col-3' onClick={()=>handleProfile(Taro.getStorageSync('userId'))}>
-              <AtAvatar circle image={Taro.getStorageSync('headerUrl')} size='large' />
+              <AtAvatar circle image={header} size='large' />
             </View>
             <View className='at-col-5' style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
               <View style={{fontWeight: 'bolder', fontSize: 'medium', marginBottom: '10px'}}>{Taro.getStorageSync('username')}</View>

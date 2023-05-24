@@ -2,12 +2,19 @@ import {View} from "@tarojs/components";
 import {AtAvatar} from "taro-ui";
 
 import './ChatItem.scss'
+import {UserInfo} from "../../interfaces/userInfo";
+import moment from "moment";
 
 interface Props{
   type: boolean,
-  message:string
+  message:string,
+  fromUser: UserInfo,
+  createTime:string
 }
-const ChatItem:React.FC<Props>=({type,message})=>{
+const ChatItem:React.FC<Props>=({type,message,fromUser})=>{
+
+  const {id,username,headerUrl,createTime} = fromUser;
+
   if(type){
     // 我发的消息，右边
     return (
@@ -20,7 +27,7 @@ const ChatItem:React.FC<Props>=({type,message})=>{
           </View>
         </View>
         <View className='at-col-2 message-avatar'>
-          <AtAvatar size='small' circle image='https://jdc.jd.com/img/200' />
+          <AtAvatar size='small' circle image={headerUrl} />
         </View>
       </View>
         <View className='at-row'>
@@ -29,7 +36,7 @@ const ChatItem:React.FC<Props>=({type,message})=>{
               height:'20px',padding:'0 10px',display:"flex",alignItems:'flex-start',justifyContent:'flex-end',
             marginBottom:'5px'}}
             >
-              2022-4-7 14:15
+              {moment(createTime).format("YYYY-MM-DD HH:mm")}
             </View>
           </View>
           <View className='at-col-2' />
@@ -40,7 +47,7 @@ const ChatItem:React.FC<Props>=({type,message})=>{
 <>
   <View className='at-row'>
     <View className='at-col-2 message-avatar'>
-      <AtAvatar size='small' circle image='https://jdc.jd.com/img/200' />
+      <AtAvatar size='small' circle image={headerUrl} />
     </View>
     <View className='at-col-8' style={{display:'flex',alignItems:'center',justifyContent:'flex-start'}} >
       <View className='chat-bubble-left'>
@@ -53,7 +60,7 @@ const ChatItem:React.FC<Props>=({type,message})=>{
   marginBottom:'5px'}}
     className='at-col__offset-2'
   >
-    2022-4-7 14:15
+    {moment(createTime).format("YYYY-MM-DD HH:mm")}
   </View>
 </>
   )

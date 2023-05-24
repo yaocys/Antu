@@ -10,8 +10,6 @@ interface Props{
 
 const Login: React.FC<Props>=()=>{
 
-
-
   const [username,setUsername] = useState('');
   const [password,setPassword] = useState('');
   const [captcha,setCaptcha] = useState('');

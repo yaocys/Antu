@@ -1,27 +1,87 @@
 import { View} from "@tarojs/components";
 import { AtDivider} from "taro-ui";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
+import Taro from "@tarojs/taro";
 import ChatItem from "../../components/ChatItem/ChatItem";
 
 import './chat.scss'
-import Taro from "@tarojs/taro";
+import {getCookies} from "../../utils";
+import {UserInfo} from "../../interfaces/userInfo";
 
 interface Props{
 
 }
 
+interface Letter{
+  fromUser: UserInfo,
+  letter:{
+    id:number,
+    fromId:number,
+    toId:number,
+    conversationId:string,
+    content:string,
+    createTime:string
+  }
+}
+
 const Chat:React.FC<Props>=()=>{
+
+  const [letterList,setLetterList] = useState<Letter[]>([])
+
   useEffect(()=>{
+    const { conversationId,name } = Taro.getCurrentInstance().router?.params as any;
     Taro.setNavigationBarTitle({
-      title: '张三'
+      title: name
     })
-  })
+    Taro.request({
+      url:`http://localhost:8079/community/letter/detail/${conversationId}`,
+      data:{
+        offset:1,
+        limit:5
+      },
+      header:{
+        'Cookie':getCookies()
+      },
+      success:(response)=>{
+        Taro.showToast({
+          title:'对话加载成功'
+        })
+        const list = response.data.data.letters.map((item)=>({
+          fromUser:{
+            id:item.fromUser.id,
+            username:item.fromUser.username,
+            headerUrl:item.fromUser.headerUrl,
+            createTime:item.fromUser.createTime
+          },
+          letter:{
+            id:item.letter.id,
+            fromId:item.letter.fromId,
+            toId:item.letter.toId,
+            conversationId:item.letter.conversationId,
+            content:item.letter.content,
+            createTime: item.letter.createTime
+          }
+        })).reverse()
+        setLetterList(list)
+      }
+    })
+  },[])
   return (
     <>
     <View style={{letterSpacing:'1px',lineHeight:1.5,padding:'0 10px'}}>
-      <ChatItem type message='这是我发出的消息' />
       <AtDivider content='以下是最新消息' fontSize={24} height={80} fontColor='#CCC' />
-      <ChatItem type={false} message='而这是对方发出的消息，我希望这条文本足够长以观察换行的情况' />
+      {
+        letterList.map((item,index)=>{
+          const id = Taro.getStorageSync('userId')
+          return (
+            <ChatItem key={index} type={item.fromUser.id === id}
+              message={item.letter.content}
+              fromUser={item.fromUser}
+              createTime={item.letter.createTime}
+            />
+          )
+        })
+      }
     </View>
       {/*底栏*/}
       <View className='bottom_bar' style={{zIndex: 450}}>
