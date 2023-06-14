@@ -40,7 +40,7 @@ const Search: React.FC = () => {
   };
 
   const handleDelete = () => {
-    historyList.length=0
+    setHistoryList([])
   };
 
   const searchHotSong = (hotWords: string) => {

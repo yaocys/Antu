@@ -7,6 +7,7 @@ import PostItem from "../../components/PostItem/PostItem";
 
 import './index.scss'
 import {getCookies} from "../../utils";
+import {HOST} from "../../util/constants";
 
 const PAGE_SIZE = 5
 
@@ -64,7 +65,7 @@ const Index: React.FC<Props> = () => {
   }
 
   usePullDownRefresh(() => {
-    console.log('正在下拉刷新')
+
   })
 
   useReachBottom(() => {
@@ -73,7 +74,7 @@ const Index: React.FC<Props> = () => {
 
   const getHotList = async ()=>{
     await Taro.request({
-      url:'https://yaos.cc/community/hot',
+      url:`${HOST}hot`,
       header:{
         'Cookie':getCookies()
       },
@@ -94,7 +95,7 @@ const Index: React.FC<Props> = () => {
     setLoading(true);
     try {
       const response = await Taro.request({
-        url: "https://yaos.cc/community/index",
+        url: `${HOST}index`,
         data: {
           offset: pageNum + 1,
           limit: PAGE_SIZE
@@ -123,9 +124,6 @@ const Index: React.FC<Props> = () => {
   useEffect(() => {
     getPostList();
     getHotList()
-    Taro.showTabBarRedDot({
-      index:1
-    })
   }, []);
 
   const refresh = async ()=>{
@@ -133,7 +131,7 @@ const Index: React.FC<Props> = () => {
     setLoading(true);
     try {
       const response = await Taro.request({
-        url: "https://yaos.cc/community/index",
+        url: `${HOST}index`,
         data: {
           offset: pageNum,
           limit: PAGE_SIZE
@@ -155,8 +153,12 @@ const Index: React.FC<Props> = () => {
     }
   }
 
-  useDidShow(async ()=>{
-
+  useDidShow(()=>{
+    if(Taro.getStorageSync('ticket')){
+      Taro.showTabBarRedDot({
+        index:1
+      })
+    }
   })
 
   const handleEdit = ()=>{
@@ -249,6 +251,7 @@ const Index: React.FC<Props> = () => {
                       }}
                       likeCount={post.likeCount}
                       commentCount={post.commentCount}
+                      likeStatus={post.likeStatus}
                     />
                   )
                 })
@@ -286,6 +289,7 @@ const Index: React.FC<Props> = () => {
                     likeCount={post.likeCount}
                     commentCount={post.commentCount}
                     index={index}
+                    likeStatus={post.likeStatus}
                   />
                 )
               })

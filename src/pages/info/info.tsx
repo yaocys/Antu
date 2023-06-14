@@ -1,8 +1,9 @@
 import {View} from "@tarojs/components";
-import {AtFloatLayout, AtImagePicker, AtList, AtListItem} from "taro-ui";
+import {AtList, AtListItem} from "taro-ui";
 import Taro from "@tarojs/taro";
 import {useEffect, useState} from "react";
 import {getCookies} from "../../utils";
+import {HOST} from "../../util/constants";
 
 interface Info{
 
@@ -22,7 +23,7 @@ const Info:React.FC<Info>=()=>{
       async success(res) {
         const tempFilePaths = res.tempFilePaths
         const response = await Taro.uploadFile({
-          url: 'https://yaos.cc/community/user/upload', //仅为示例，非真实的接口地址
+          url: `${HOST}user/upload`, 
           filePath: tempFilePaths[0],
           header: {
             'Cookie': getCookies()

@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import {AtButton, AtDivider, AtForm, AtInput} from "taro-ui";
 import Taro from "@tarojs/taro";
 import {getCookies} from "../../utils";
+import {HOST} from "../../util/constants";
 
 interface Props{
 
@@ -18,7 +19,7 @@ const Login: React.FC<Props>=()=>{
   const handleSubmit = ()=>{
     let cookie = Taro.getStorageSync('captchaOwner');
     Taro.request({
-      url: 'http://localhost:8079/community/login',
+      url: `${HOST}login`,
       method: 'POST',
       data: {
         username: username,
@@ -56,7 +57,7 @@ const Login: React.FC<Props>=()=>{
   const getCaptcha = async () => {
     try {
       const response = await Taro.request({
-        url: 'http://localhost:8079/community/captcha',
+        url: `${HOST}captcha`,
         responseType: 'arraybuffer',
         header: {
           'Cookie': getCookies()
@@ -111,7 +112,7 @@ const Login: React.FC<Props>=()=>{
           success: (res)=>{
             if(res.code){
               Taro.request({
-                url: 'http://localhost:8079/community/wechatLogin',
+                url: `${HOST}wechatLogin`,
                 method: 'POST',
                 data: {
                   code: res.code,

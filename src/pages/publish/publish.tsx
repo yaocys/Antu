@@ -1,8 +1,9 @@
 import {Picker, View} from "@tarojs/components";
 import {AtButton, AtForm, AtInput, AtList, AtListItem, AtTextarea} from "taro-ui";
 import {useState} from "react";
-import Taro from "@tarojs/taro";
+import Taro, {useDidShow} from "@tarojs/taro";
 import {getCookies} from "../../utils";
+import {HOST} from "../../util/constants";
 
 interface Props{
 
@@ -14,6 +15,10 @@ const Publish:React.FC<Props>=()=>{
   const [content,setContent] = useState('')
   const [classify,setClassify] = useState('交流互助')
   const selector = ['经验分享','选校选择','交流互助','政策解读','资料发布']
+
+  useDidShow(()=>{
+    if(!Taro.getStorageSync('ticket')) Taro.navigateTo({url:'/pages/login/login'})
+  })
 
   /**
    * 保存表达数据，柯里化
@@ -38,7 +43,7 @@ const Publish:React.FC<Props>=()=>{
   const handleSubmit = ()=>{
     // TODO 分类参数暂时没用
     Taro.request({
-      url: 'http://localhost:8079/community/post/add',
+      url: `${HOST}post/add`,
       method:'POST',
       data:{
         title: title,
@@ -57,7 +62,7 @@ const Publish:React.FC<Props>=()=>{
       }else if(code===200){
         handleRest()
         Taro.switchTab({
-          url: '/pages/index/index'
+          url: '/pages/index/index',
         })
         Taro.showToast({
           title: '发帖成功'

@@ -4,6 +4,7 @@ import Taro, {useDidShow} from "@tarojs/taro";
 import {getCookies} from "../../utils";
 import NotifyItem from "../../components/NotifyItem/NotifyItem";
 import {UserInfo} from "../../interfaces/userInfo";
+import {HOST} from "../../util/constants";
 
 interface Props{
 
@@ -27,7 +28,7 @@ const Notify:React.FC<Props>=()=>{
     setTopic(type)
     if(Taro.getStorageSync('ticket')) {
       await Taro.request({
-        url: `http://localhost:8079/community/notice/detail/${type}`,
+        url: `${HOST}notice/detail/${type}`,
         data:{
           offset:1,
           limit:5

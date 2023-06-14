@@ -4,13 +4,14 @@ import {
   AtList,
   AtListItem,
   AtSearchBar,
-  AtSegmentedControl, AtSwipeAction
+  AtSegmentedControl
 } from "taro-ui";
 import Taro, {useDidShow} from "@tarojs/taro";
 import './index.scss'
 import {getCookies} from "../../utils";
 import NoticeItem from "../../components/NoticeItem/NoticeItem";
 import {UserInfo} from "../../interfaces/userInfo";
+import {HOST} from "../../util/constants";
 
 interface Message{
   id:number,
@@ -76,7 +77,7 @@ const Notice:React.FC<Props> = ()=>{
   useDidShow(async ()=>{
     if(Taro.getStorageSync('ticket')) {
       await Taro.request({
-        url:'http://localhost:8079/community/notice/list',
+        url:`${HOST}notice/list`,
         header:{
           'Cookie':getCookies()
         },
@@ -100,7 +101,7 @@ const Notice:React.FC<Props> = ()=>{
         }
       })
       await Taro.request({
-        url:'http://localhost:8079/community/letter/list',
+        url:`${HOST}letter/list`,
         data:{
           offset: 1,
           limit: 5
@@ -112,23 +113,6 @@ const Notice:React.FC<Props> = ()=>{
           const code = response.data.code
           if(code===200){
             setLetterList(response.data.data.conversations.list)
-/*            const list = response.data.data.conversations.list.map((item)=>({
-              id:item.id,
-              fromId:item.fromId,
-              toId:item.toId,
-              conversationId:item.conversationId,
-              content:item.content,
-              createTime:item.createTime,
-              letterCount:item.letterCount,
-              unreadCount:item.unreadCount,
-              target:{
-                id:item.target.id,
-                username:item.target.username,
-                headerUrl:item.target.headerUrl,
-                createTime:item.target.createTime
-              }
-            }))
-            setLetterList(list)*/
             Taro.showToast({
               title: '获取私信列表成功'
             })
@@ -141,9 +125,9 @@ const Notice:React.FC<Props> = ()=>{
       })
     }else {
       // 没登陆就跳转到登录页
-/*      Taro.navigateTo({
+      Taro.navigateTo({
         url :'/pages/login/login'
-      })*/
+      })
     }
   })
 

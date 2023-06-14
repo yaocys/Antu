@@ -1,9 +1,10 @@
 import {View} from "@tarojs/components";
 import {AtAvatar} from "taro-ui";
+import moment from "moment";
+import {useEffect} from "react";
 
 import './ChatItem.scss'
 import {UserInfo} from "../../interfaces/userInfo";
-import moment from "moment";
 
 interface Props{
   type: boolean,
@@ -11,9 +12,13 @@ interface Props{
   fromUser: UserInfo,
   createTime:string
 }
-const ChatItem:React.FC<Props>=({type,message,fromUser})=>{
+const ChatItem:React.FC<Props>=({type,message,fromUser,createTime})=>{
 
-  const {id,username,headerUrl,createTime} = fromUser;
+  useEffect(()=>{
+    console.log(fromUser)
+  })
+
+  const {id,username,headerUrl} = fromUser;
 
   if(type){
     // 我发的消息，右边

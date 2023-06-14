@@ -3,6 +3,7 @@ import Taro, { useLoad } from '@tarojs/taro'
 import {AtButton, AtList, AtListItem} from "taro-ui";
 import './index.scss'
 import {getCookies} from "../../utils";
+import {HOST} from "../../util/constants";
 
 interface Props{
 
@@ -19,7 +20,7 @@ const Setting:React.FC<Props>=()=>{
 
   const logout=()=>{
     Taro.request({
-      url:'http://localhost:8079/community/logout',
+      url:`${HOST}logout`,
       header:{
         'Cookie': getCookies()
       }

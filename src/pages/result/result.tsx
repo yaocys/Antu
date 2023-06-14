@@ -5,6 +5,7 @@ import PostItem from "../../components/PostItem/PostItem";
 
 import {getCookies} from "../../utils";
 import {AtSearchBar} from "taro-ui";
+import {HOST} from "../../util/constants";
 
 interface Props{
 
@@ -34,7 +35,7 @@ const Result:React.FC<Props>=()=>{
   const getResult = async (keyword:string)=>{
     setKey(keyword)
     Taro.request({
-      url:'http://localhost:8079/community/search',
+      url:`${HOST}search`,
       data:{
         keyword: keyword,
         current:1,
@@ -96,6 +97,7 @@ const Result:React.FC<Props>=()=>{
                 }}
                 likeCount={post.likeCount}
                 commentCount={post.commentCount}
+                likeStatus={post.likeStatus}
               />
             )
           })

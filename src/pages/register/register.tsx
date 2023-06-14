@@ -16,7 +16,13 @@ const Register:React.FC<Props> = ()=>{
 
   const handleSubmit = ()=>{
     Taro.showToast({
-      title: '激活邮件已发送'
+      title: '激活邮件已发送',
+      duration:2000,
+      complete:async ()=>{
+        await Taro.navigateBack({
+          delta:1
+        })
+      }
     })
   }
 

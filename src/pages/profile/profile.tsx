@@ -7,6 +7,7 @@ import FolloweeCard from "../../components/FolloweeCard/FolloweeCard";
 import FollowerCard from "../../components/FollowerCard/FollowerCard";
 import {getCookies} from "../../utils";
 import {UserInfo} from "../../interfaces/userInfo";
+import {HOST} from "../../util/constants";
 
 
 interface Props{
@@ -36,7 +37,7 @@ const Publish:React.FC<Props>=()=>{
 
   const getUserInfo = async (id:string)=>{
     await Taro.request({
-      url: `http://localhost:8079/community/user/profile/${id}`,
+      url: `${HOST}user/profile/${id}`,
       header:{
         'Cookie': getCookies()
       },
@@ -66,7 +67,7 @@ const Publish:React.FC<Props>=()=>{
   // TODO 这里的列表没有做分页
   const getFollow=async (id:string)=>{
     await Taro.request({
-      url: `http://localhost:8079/community/followees/${id}`,
+      url: `${HOST}followees/${id}`,
       header:{
         'Cookie': getCookies()
       },
@@ -95,7 +96,7 @@ const Publish:React.FC<Props>=()=>{
       }
     })
     await Taro.request({
-      url: `http://localhost:8079/community/followers/${id}`,
+      url: `${HOST}followers/${id}`,
       header:{
         'Cookie': getCookies()
       },
@@ -134,15 +135,19 @@ const Publish:React.FC<Props>=()=>{
   const followed = ()=>{
     if (hasFollowed){
       return (
-        <AtButton type='primary' size='small' circle style={{fontSize: 'x-small'}} disabled>
+        <AtButton type='secondary' size='small' circle style={{fontSize: 'x-small'}} disabled>
           已关注
         </AtButton>
       )
     }else  return (
-      <AtButton type='primary' size='small' circle style={{fontSize: 'x-small'}}>
+      <AtButton type='primary' size='small' circle style={{fontSize: 'x-small'}} onClick={handleFollow}>
         关注
       </AtButton>
     )
+  }
+
+  const handleFollow=()=>{
+    setHasFollowed(true)
   }
 
   return (

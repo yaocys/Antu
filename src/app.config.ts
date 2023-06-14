@@ -1,14 +1,13 @@
 export default defineAppConfig({
   // 哪个路径放在最前面，打开小程序时就先加载哪个
   pages: [
+    'pages/index/index',
+    'pages/notice/notice',
     'pages/user/user',
     'pages/info/info',
-
-    'pages/index/index',
     'pages/search/search',
     'pages/checkIn/checkIn',
     'pages/result/result',
-    'pages/notice/notice',
     'pages/notify/notify',
     'pages/profile/profile',
     'pages/register/register',

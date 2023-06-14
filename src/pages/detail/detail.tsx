@@ -14,6 +14,7 @@ import moment from "moment";
 import {getCookies} from "../../utils";
 
 import './index.scss'
+import {HOST} from "../../util/constants";
 
 
 interface Props{
@@ -84,7 +85,7 @@ const Detail:React.FC<Props>= () => {
     if (!hasNextPage || loading) return;
     setLoading(true);
     await Taro.request({
-      url: `http://localhost:8079/community/comment/query/${id}`,
+      url: `${HOST}comment/query/${id}`,
       data: {
         offset: offset + 1,
         limit: 5
@@ -145,7 +146,7 @@ const Detail:React.FC<Props>= () => {
     const { id } = Taro.getCurrentInstance().router?.params as any;
     setPostId(id);
     Taro.request({
-      url: `http://localhost:8079/community/post/detail/${id}`,
+      url: `${HOST}post/detail/${id}`,
       header:{
         'Cookie': getCookies()
       },
@@ -206,7 +207,7 @@ const Detail:React.FC<Props>= () => {
   const commentOrReply = async ()=>{
     if(Taro.getStorageSync('ticket')){
       await Taro.request({
-        url: `http://localhost:8079/community/comment/add/${postId}`,
+        url: `${HOST}comment/add/${postId}`,
         method:'POST',
         data:{
           userId: Taro.getStorageSync('userId'),
@@ -225,6 +226,9 @@ const Detail:React.FC<Props>= () => {
               title:`${type===1?'回帖':'回复'}成功`
             })
             handleClose()// 关闭编辑框
+            Taro.redirectTo({
+              url: `/pages/detail/detail?id=${postId}`
+            });
           }
         }
       })
@@ -234,6 +238,8 @@ const Detail:React.FC<Props>= () => {
       })
     }
   }
+
+
 
   return (
     <>
@@ -306,13 +312,13 @@ const Detail:React.FC<Props>= () => {
             </View>
           </View>
           <View  className='at-col-2 at-row__justify--center at-row'>
-            <AtBadge value={10} maxValue={99}>
+            <AtBadge value={postDetail.commentCount} maxValue={99}>
               <View className=' at-icon at-icon-message'
                 style={{fontSize:'25px',textAlign:'center',lineHeight:'34px'}}
               />
             </AtBadge>
           </View>
-          <View className='at-col-1 at-icon at-icon-heart'
+          <View className={`at-col-1 at-icon ${postDetail.likeStatus?'at-icon-heart-2':'at-icon-heart'}`}
             style={{fontSize:'25px',textAlign:'right',lineHeight:'34px'}}
           />
           <View className='at-col-2 at-icon at-icon-star'

@@ -19,7 +19,8 @@ interface PostItemProps {
   },
   likeCount: number,
   commentCount: number,
-  index?: number
+  index?: number,
+  likeStatus:boolean
 }
 
 const PostItem: React.FC<PostItemProps> = ({id,title,
@@ -27,14 +28,24 @@ const PostItem: React.FC<PostItemProps> = ({id,title,
                                              date,
                                              content,
                                              likeCount,
-                                             commentCount,index}) => {
+                                             commentCount,index,
+                                           likeStatus}) => {
 
   const {userId,username, school, major,headerUrl} = author;
-  const [likeStatus,setLikeStatus] = useState('at-icon-heart');
+  const [likeStatus2,setLikeStatus2] = useState(likeStatus?'at-icon-heart-2':'at-icon-heart');
+  const [likes,setLikes] = useState(likeCount)
 
   const handleLike=()=>{
-    if(likeStatus==='at-icon-heart') setLikeStatus('at-icon-heart-2')
-    else setLikeStatus('at-icon-heart')
+    if(Taro.getStorageSync('ticket')){
+      if(likeStatus2==='at-icon-heart'){
+        setLikeStatus2('at-icon-heart-2')
+        setLikes(likes+1)
+      }
+      else{
+        setLikeStatus2('at-icon-heart')
+        setLikes(likes-1)
+      }
+    }
   }
 
   const showRanking=()=>{
@@ -117,8 +128,8 @@ const PostItem: React.FC<PostItemProps> = ({id,title,
           &nbsp;<Text style={{fontSize: 'x-small'}}>{commentCount}</Text>
         </View>
         <View className='at-col-4' style={{display:'flex',justifyContent:'flex-end'}}>
-          <View className={`at-icon ${likeStatus}`} onClick={handleLike}>
-            &nbsp;<Text style={{fontSize: 'x-small'}}>{likeCount}</Text>
+          <View className={`at-icon ${likeStatus2}`} onClick={handleLike}>
+            &nbsp;<Text style={{fontSize: 'x-small'}}>{likes}</Text>
           </View>
         </View>
       </View>
